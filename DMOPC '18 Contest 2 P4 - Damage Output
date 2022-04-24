@@ -1,0 +1,59 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	static StringTokenizer st;
+	public static void main(String[] args) throws IOException {
+		st = new StringTokenizer(br.readLine());
+		int N = nextInt();
+		Long M = Long.parseLong(next());
+		long[] psa = new long[N+1];
+		psa[1] = nextInt();
+		for (int i=2; i<N+1; i++) {
+			psa[i] = psa[i-1]+Long.parseLong(next());
+		}
+		int min = -1;
+		int leftpointer = 1;
+		int current = 0;
+		for (int i=1; i<N+1; i++) {
+			if (psa[i]-psa[i-1]>=M) {
+				min=1;
+			}
+			while(true) {
+				if (psa[i]-psa[leftpointer-1]>=M) {
+					current = i-leftpointer+1;
+					if (min>current||min==-1) {
+						min = current;
+					}
+					if (psa[i]-psa[leftpointer]>=M) {
+						leftpointer++;
+						current = i-leftpointer+1;
+						if (min>current||min==-1) {
+							min = current;
+						}
+					}
+					else {
+					break;
+					}
+
+				}
+				else {
+					break;
+				}
+			}
+			
+			
+		}
+		System.out.println(min);
+	}
+	static String next() throws IOException {
+		while (st == null || !st.hasMoreTokens()) {
+		st = new StringTokenizer(br.readLine());
+		}
+		return st.nextToken();
+	}
+	static int nextInt() throws IOException {
+		return Integer.parseInt(next());
+	}
+}
