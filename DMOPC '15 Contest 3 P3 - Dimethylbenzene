@@ -1,0 +1,77 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	static StringTokenizer st;
+	public static void main(String[] args) throws IOException {
+		st = new StringTokenizer(br.readLine());
+		int N = nextInt();
+		int M = nextInt();
+		boolean[][] map = new boolean[N+1][N+1];
+		for (int i=0; i<M; i++) {
+			int a = nextInt();
+			int b = nextInt();
+			map[a][b] = true;
+			map[b][a] = true;
+		}
+		boolean yes = false;
+		int i=1;
+		while (!yes&&i<=N) {
+			if (fr(map, N, i, "")&&!yes) {
+				System.out.println("YES");
+				yes = true;
+			}
+			i++;
+		}
+		if (!yes) {
+			System.out.println("NO");
+		}
+
+	}
+	static String next() throws IOException {
+		while (st == null || !st.hasMoreTokens()) {
+		st = new StringTokenizer(br.readLine());
+		}
+		return st.nextToken();
+	}
+	static int nextInt() throws IOException {
+		return Integer.parseInt(next());
+	}
+	static String readLine() throws IOException {
+		return br.readLine().trim();
+	}
+	static long nextLong() throws IOException {
+		return Long.parseLong(next());
+	}
+	static boolean fr (boolean[][] map, int N, int cur, String visited) {
+		if(visited.length()>=7) {
+			return false;
+			
+		}
+		if (cur>N) {
+			return false;
+		}
+		if (visited.indexOf(Integer.toString(cur))==0) {
+			if (visited.length()==6) {
+			return true;
+			}
+			return false;
+		}
+		if (visited.indexOf(Integer.toString(cur))!=-1) {
+			return false;
+		}
+		visited = visited+Integer.toString(cur);
+		if (visited.length()==6) {
+			if (map[(int)visited.charAt(0)-48][(int)visited.charAt(5)-48]) {
+				return true;
+			}
+		}
+		for (int i=cur+1; i<=N; i++) {
+			if(map[cur][i]&&visited.indexOf(Integer.toString(i))==-1&&fr(map, N, i, visited)) {
+				return true;
+			}
+		}
+		return false;
+	}
+}
