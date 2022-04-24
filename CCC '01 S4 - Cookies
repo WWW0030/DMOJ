@@ -1,0 +1,114 @@
+import java.io.*;
+import java.util.*;
+
+class point {
+	double x;
+	double y;
+	public point(double x, double y) {
+		this.x = x;
+		this.y = y;
+	}
+}
+public class Cookies {
+	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	static StringTokenizer st;
+	public static void main(String[] args) throws IOException {
+		st = new StringTokenizer(br.readLine());
+		int n = nextInt();
+		point[] list = new point[n];
+		for (int i=0; i<n; i++) {
+			list[i] = new point(nextInt(), nextInt());
+		}
+		double maxrad = 0;
+		point maxcen = new point(0,0);
+		for (int x=0; x<n-1; x++) {
+			for (int y=x+1; y<n; y++) {
+				point a = list[x];
+				point b = list[y];
+				point ab = new point((a.x+b.x)/2, (a.y+b.y)/2);
+				double rad = Math.sqrt(Math.pow(ab.x-b.x, 2)+Math.pow(ab.y-b.y, 2));
+				if (rad>maxrad) {
+					maxrad = rad;
+					maxcen = ab;
+				}
+			}
+		}
+		boolean done = true;
+		for (point a : list) {
+			if (Math.sqrt(Math.pow(a.x-maxcen.x, 2)+Math.pow(a.y-maxcen.y, 2))>maxrad) {
+				done = false;
+			}
+		}
+		if (done) {
+			System.out.println(round(maxrad*2, 2));
+		}
+		else {
+			maxrad = 0;
+			for (point a : list) {
+				for (point b: list) {
+					for (point c: list) {
+						if (a!=b && a!=c && b!=c) {
+							double rad = radius(a, b, c);
+							if (rad>maxrad) {
+								maxrad = rad;
+							}
+						}
+					}
+				}
+			}
+			System.out.println(round(maxrad*2, 2));
+		}
+	}
+	static String next() throws IOException {
+		while (st == null || !st.hasMoreTokens()) {
+		st = new StringTokenizer(br.readLine());
+		}
+		return st.nextToken();
+	}
+	static int nextInt() throws IOException {
+		return Integer.parseInt(next());
+	}
+	static String readLine() throws IOException {
+		return br.readLine().trim();
+	}
+	static long nextLong() throws IOException {
+		return Long.parseLong(next());
+	}
+	public static double round(double value, int places) {
+	    if (places < 0) throw new IllegalArgumentException();
+
+	    long factor = (long) Math.pow(10, places);
+	    value = value * factor;
+	    long tmp = Math.round(value);
+	    return (double) tmp / factor;
+	}
+	static double radius(point a, point b, point c) {
+		if (a.y==b.y) {
+			point bc = new point((b.x+c.x)/2, (b.y+c.y)/2);
+			double mbc = -(b.x-c.x)/(b.y-c.y);
+			double bbc = bc.y-mbc*bc.x;
+			double x = (a.x+b.x)/2;
+			double y = mbc*x+bbc;
+			return Math.sqrt(Math.pow(x-b.x, 2)+Math.pow(y-b.y, 2));
+		}
+		else if (b.y == c.y) {
+			point ab = new point((a.x+b.x)/2, (a.y+b.y)/2);
+			double mab = -(a.x-b.x)/(a.y-b.y);
+			double bab = ab.y-mab*ab.x;
+			double x = (b.x+c.x)/2;
+			double y = mab*x+bab;
+			return Math.sqrt(Math.pow(x-b.x, 2)+Math.pow(y-b.y, 2));
+		}
+		else {
+			point ab = new point((a.x+b.x)/2, (a.y+b.y)/2);
+			double mab = -(a.x-b.x)/(a.y-b.y);
+			point bc = new point((b.x+c.x)/2, (b.y+c.y)/2);
+			double mbc = -(b.x-c.x)/(b.y-c.y);
+			double bab = ab.y-mab*ab.x;
+			double bbc = bc.y-mbc*bc.x;
+			double x = (bbc-bab)/(mab-mbc);
+			double y = mab*x+bab;
+			return Math.sqrt(Math.pow(x-a.x, 2)+Math.pow(y-a.y, 2));
+		}
+	}
+}
