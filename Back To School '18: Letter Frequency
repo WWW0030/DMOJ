@@ -1,0 +1,39 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+ 	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	static StringTokenizer st;
+	public static void main(String[] args) throws IOException {
+		String s = br.readLine();		
+		st = new StringTokenizer(br.readLine());
+		int[][] list = new int[26][s.length()+1];
+		for (int i=1; i<s.length()+1; i++) {
+			for (int m=0; m<26; m++) {
+				list[m][i]=list[m][i-1];
+			}
+			char c = s.charAt(i-1);
+			int n = c;
+			if (c!=' ') {
+				list[n-97][i]++;
+			}
+		}
+		int Q = nextInt();
+		for (int i=0; i<Q; i++) {
+			int a = nextInt();
+			int b = nextInt();
+			int c = next().charAt(0);
+			System.out.println(list[c-97][b]-list[c-97][a-1]);
+		}
+		
+	}
+	static String next() throws IOException {
+		while (st == null || !st.hasMoreTokens()) {
+		st = new StringTokenizer(br.readLine());
+		}
+		return st.nextToken();
+	}
+	static int nextInt() throws IOException {
+		return Integer.parseInt(next());
+	}
+}
