@@ -1,0 +1,40 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	static StringTokenizer st;
+	public static void main(String[] args) throws IOException {
+		st = new StringTokenizer(br.readLine());
+		int N = nextInt();
+		int Q = nextInt();
+		int[][] table = new int[N+1][10];
+		for (int i=1; i<N+1; i++) {
+			int cur = nextInt()-1;
+			for (int m=0; m<10; m++) {
+				table[i][m] = table[i-1][m];
+			}
+			table[i][cur]++;
+		}
+		for (int i=0; i<Q; i++) {
+			int a = nextInt();
+			int b = nextInt();
+			for (int m=9; m>=0; m--) {
+				int dif = table[N][m]+table[a-1][m]-table[b][m];
+				if (dif != 0) {
+					System.out.println((m+1)+" "+dif);
+					break;
+				}
+			}
+		}
+	}
+	static String next() throws IOException {
+		while (st == null || !st.hasMoreTokens()) {
+		st = new StringTokenizer(br.readLine());
+		}
+		return st.nextToken();
+	}
+	static int nextInt() throws IOException {
+		return Integer.parseInt(next());
+	}
+}
