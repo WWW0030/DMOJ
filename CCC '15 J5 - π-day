@@ -1,0 +1,39 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	static StringTokenizer st;
+	static int sum = 0;
+	public static void main(String[] args) throws IOException {
+		st = new StringTokenizer(br.readLine());
+		int pie = nextInt();
+		int people = nextInt();
+		pie = pie-people;
+		Distribution(people, pie);
+		System.out.println(sum);
+	}
+	static String next() throws IOException {
+		while (st == null || !st.hasMoreTokens()) {
+		st = new StringTokenizer(br.readLine());
+		}
+		return st.nextToken();
+	}
+	static int nextInt() throws IOException {
+		return Integer.parseInt(next());
+	}
+	static String readLine() throws IOException {
+		return br.readLine().trim();
+	}
+	static long nextLong() throws IOException {
+		return Long.parseLong(next());
+	}
+	static void Distribution(int people, int pie) {
+		if (pie==0 || people ==1 || pie==1) {
+			sum++;
+		}
+		else {
+			for (int i = Math.min(pie, people); i>0; i--) Distribution(i, pie-i);
+		}
+	}
+}
